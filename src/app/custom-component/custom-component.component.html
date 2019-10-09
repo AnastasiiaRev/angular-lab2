@@ -1,0 +1,58 @@
+<app-header [navBarImpl]="homeNav"></app-header>
+
+<p>custom-component works!</p>
+<p [ngClass]= "{ 'bold': isLoggedIn }" #userNameTmplVar> 
+    Hello, {{userName}} 
+</p>
+
+
+
+<!-- Получаем контент из шаблонной переменной #userNameTmplVar -->
+<div>
+    {{ userNameTmplVar.textContent }}
+</div>
+
+
+<input [(ngModel)]='user.name'/>
+<input [(ngModel)]='user.age'/>
+<input [ngModel]='userName'/>
+
+<!-- <app-profile user="{{userName}}"></app-profile> -->
+<app-profile 
+    *ngIf="isLoggedIn" 
+    [user]="user" 
+    (onlogout)="onLogout($event)" #profile>
+</app-profile>
+
+
+<button (click)="profileComponent.customize()">
+    make my profile colorfull
+</button>
+
+
+<div *ngIf="isLoggedIn; else unathorized">
+    <p>My list({{articles.length}})</p>
+    <span *ngIf="articles.length === 0">No articles</span>
+    <ul>
+        <li 
+        [appZoom]="20" 
+        *ngFor="let article of articles"> 
+            {{ article.name | uppercase }} - {{ article.createdOn | date: 'yyyy-MM-dd' }}
+        </li>
+        <li
+        *ngFor="let article of articles">
+            {{ article.name | lowercase | slice:1:5}} 
+        </li>
+    </ul>
+</div>
+
+<ng-template #unathorized>
+    <p>Please, log in to see your articles</p>
+</ng-template>
+
+<ng-template #homeNav>
+    Home page navigation
+</ng-template>
+
+
+
